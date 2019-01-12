@@ -36,6 +36,11 @@ public class XmlTranslator extends JsonTranslator implements Translator {
 
   @Override
   protected JsonGenerator forJsonGenerator(ByteArrayOutputStream outputStream, String structName) {
-    return XmlHelper.createGenerator(outputStream, structName);
+    int pos = structName.lastIndexOf(".");
+    String rootName = structName;
+    if(pos >= 0) {
+      rootName = structName.substring(pos + 1);
+    }
+    return XmlHelper.createGenerator(outputStream, rootName);
   }
 }

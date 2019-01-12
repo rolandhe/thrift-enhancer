@@ -16,6 +16,7 @@
         <module>thrift-stuff</module>
         <module>thrift-translator</module>
         <module>thrift-client</module>
+        <module>thrift-enhancer-test</module>
     </modules>
 
     <properties>
