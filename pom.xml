@@ -151,10 +151,6 @@
                             <goals>
                                 <goal>sign</goal>
                             </goals>
-                            <configuration>
-                                <keyname>rolandhe</keyname>
-                                <passphraseServerId>rolandhe</passphraseServerId>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
