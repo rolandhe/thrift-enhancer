@@ -12,6 +12,8 @@ import com.github.rolandhe.thrift.enhancer.stuff.exp.ThriftExp;
 import com.github.rolandhe.thrift.enhancer.stuff.general.ThriftTypeNumber;
 
 /**
+ * ThriftEncoder抽象实现, 通用的功能都内聚到此类中
+ *
  * @author rolandhe
  */
 public abstract class AbstractThriftEncode implements ThriftEncoder {

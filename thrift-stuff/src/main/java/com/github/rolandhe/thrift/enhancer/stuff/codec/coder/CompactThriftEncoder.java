@@ -16,6 +16,8 @@ import com.github.rolandhe.thrift.enhancer.stuff.general.ThriftTypeNumber;
 import java.io.UnsupportedEncodingException;
 
 /**
+ * thrift compact协议实现
+ *
  * @author rolandhe
  */
 public class CompactThriftEncoder extends AbstractThriftEncode implements ThriftEncoder {

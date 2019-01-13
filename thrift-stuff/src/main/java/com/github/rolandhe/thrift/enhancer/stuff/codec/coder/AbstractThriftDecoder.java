@@ -20,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
+ * ThriftDecoder抽象实现, 通用的功能都内聚到此类中
+ *
  * @author rolandhe
  */
 public abstract class AbstractThriftDecoder implements ThriftDecoder {

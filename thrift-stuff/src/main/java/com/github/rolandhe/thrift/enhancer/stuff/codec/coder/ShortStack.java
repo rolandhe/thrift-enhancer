@@ -1,6 +1,8 @@
 package com.github.rolandhe.thrift.enhancer.stuff.codec.coder;
 
 /**
+ * compact protocol使用的工具，copy from libthrift
+ *
  * @author rolandhe
  */
 class ShortStack {

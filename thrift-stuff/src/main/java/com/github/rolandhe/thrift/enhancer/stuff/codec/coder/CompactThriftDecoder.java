@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ *
+ * thrift compact 协议实现
+ *
  * @author rolandhe
  */
 public class CompactThriftDecoder extends AbstractThriftDecoder implements ThriftDecoder {
