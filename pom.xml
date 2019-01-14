@@ -13,7 +13,7 @@
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
     <modules>
-        <!--<module>thrift-enhancer-test</module>-->
+        <module>thrift-enhancer-test</module>
         <module>thrift-stuff</module>
         <module>thrift-translator</module>
         <module>thrift-client</module>
