@@ -53,11 +53,11 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-snapshots</id>
+            <id>nexus-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype-staging</id>
+            <id>nexus-release</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
