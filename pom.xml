@@ -8,6 +8,7 @@
     <artifactId>thrift-enhancer</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
+    <description>thrift enhancer tools</description>
 
     <name>thrift-enhancer</name>
     <!-- FIXME change it to the project's website -->
@@ -48,7 +49,8 @@
     </issueManagement>
     <scm>
         <url>https://github.com/rolandhe/thrift-enhancer</url>
-        <connection>scm:git:https://git@github.com/rolandhe/thrift-enhancer.git</connection>
+        <connection>scm:git:https://github.com/rolandhe/thrift-enhancer</connection>
+        <developerConnection>scm:git:git@github.com:rolandhe/thrift-enhancer</developerConnection>
     </scm>
 
     <distributionManagement>
@@ -110,6 +112,19 @@
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
