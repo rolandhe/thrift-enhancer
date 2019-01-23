@@ -5,15 +5,14 @@
     <parent>
         <artifactId>thrift-enhancer</artifactId>
         <groupId>com.github.rolandhe</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>thrift-translator</artifactId>
 
     <name>thrift-translator</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>https://github.com/rolandhe/thrift-enhancer/tree/master/thrift-translator</url>
 
 
     <dependencies>
