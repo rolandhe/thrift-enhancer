@@ -11,8 +11,7 @@
     <description>thrift enhancer tools</description>
 
     <name>thrift-enhancer</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url>https://github.com/rolandhe/thrift-enhancer</url>
     <modules>
         <module>thrift-enhancer-test</module>
         <module>thrift-stuff</module>
