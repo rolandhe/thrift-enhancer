@@ -9,9 +9,9 @@ thrift-enhancer是一组支持thrift协议的加强包，设计的初衷是为�
 thrift与json、xml的双向转换, 动态解析idl功能基于[antlr4](https://github.com/antlr/antlr4))实现
 * thrift-client: 提供thrift调用的能力，目前仅支持 TSocket的能力
 
-# 使用thrift-stuff 转换pojo
+# 1. 使用thrift-stuff 转换pojo
 
-## 导入
+## 1.1 导入
 
 ### maven
 
@@ -31,9 +31,9 @@ compile group: 'com.github.rolandhe', name: 'thrift-stuff', version: '1.0.0'
 
 ```
 
-## examples
+## 1.2 examples
 
-### 创建pojo
+### 1.2.1 创建pojo
 
 ```
 public enum  PojoAdStyle {
@@ -161,7 +161,7 @@ public class PojoStandardAd {
 
 ```
 
-### 序列化/反序列化
+### 1.2.2 序列化/反序列化
 
 ```
 public static PojoStandardAd createPojoAd(int id) {
@@ -192,32 +192,32 @@ public static PojoStandardAd createPojoAd(int id) {
 
 ```
 
-## 泛型支持注解
+## 1.3 泛型支持注解
 
 thrift idl支持map, list, set， 但java的泛型是语法糖，在编译后会丢失泛型信息，因此需要注解来描述泛型类型。
 
-### ListContainer
+### 1.3.1 ListContainer
 
 描述list field<br>
 * value()用于指定list element对应的类
 * realListClass() 用于反序列化时构建java List对象的实现类，可以指定ArrayList，LinkedList等
 
-### SetContainer
+### 1.3.2 SetContainer
 
 类似 ListContainer， 用于指定set 类型
 
-### MapContainer
+### 1.3.3 MapContainer
 
 描述 map field <br>
 * keyClass(), 指定map key的类型
 * valueClass() 指定map value类型
 * realMapClass(), 反序列化时用于指定java Map的实现类，比如HashMap,TreeMap等
 
-### Optional
+### 1.3.4 Optional
 
 对应thrift optional，描述指定的field是可选的
 
-## 支持泛型的例子
+## 1.4 支持泛型的例子
 
 ```
 public class PojoCreative {
@@ -396,20 +396,20 @@ static PojoCreative createPojoCreative(){
   
 ```
 
-## rpc调用序列化
+## 1.5 rpc调用序列化
 
 上面的例子都是实现的TSerializer的功能，rpc调用时 thrift的 struct会被封装成一个message的结构，
 而且需要提供一次调用的id，该id会被rpc调用完成后被原封不动的返回，可以用调用时的id和返回id进行核对
 信息的正确性。FunctionCallContext描述rpc方法的一次调用。
 
-### encodeMessage方法
+### 1.5.1 encodeMessage方法
 打包rpc 调用 message
 
-### decodeMessage
+### 1.5.6 decodeMessage
 
 解析rpc返回小学
 
-## PojoCompactSerializer
+## 1.7 PojoCompactSerializer
 
 实现了 thrift compact协议
 
