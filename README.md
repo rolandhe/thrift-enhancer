@@ -407,11 +407,174 @@ static PojoCreative createPojoCreative(){
 
 ### 1.5.6 decodeMessage
 
-解析rpc返回小学
+解析rpc返回message
 
 ## 1.7 PojoCompactSerializer
 
 实现了 thrift compact协议
+
+# 2 使用 thrift-translator转换 json与thrift
+
+日常业务中大家会在内部服务中使用thrift，而与外部的交流中会使用http/https，这时就需要一个称之为"gateway"的系统
+把内部服务thrift方法暴露成http/https, 在gateway中如果针对每个thrift接口都开发协议转换或者调用thriftsdk的话，
+那开发的工作量就比较巨大，而且容易引起jar包冲突，此时的理想状态就是使用一个json/xml到thrift的协议转换工具。而
+thrift-translator就是这样的工具，而该转换工具仅仅使用thrift idl即可，不使用其他工具。<br>
+
+maven导入：<br>
+
+```
+<!-- https://mvnrepository.com/artifact/com.github.rolandhe/thrift-translator -->
+<dependency>
+    <groupId>com.github.rolandhe</groupId>
+    <artifactId>thrift-translator</artifactId>
+    <version>1.0.0</version>
+</dependency>
+
+```
+
+gradle 导入:<br>
+
+```
+// https://mvnrepository.com/artifact/com.github.rolandhe/thrift-translator
+compile group: 'com.github.rolandhe', name: 'thrift-translator', version: '1.0.0'
+
+```
+
+## 2.1 设计原理
+thrift是使用idl来描述接口文档的，thrift idl主要包含 enum、struct、service 3中主要对象(由于java没有union，所以我们也暂时不支持union)，
+我们可以把thrift的idl文件解析出来，使用java 对象把enum、struct、service描述出来，这样就在一个抽象的级别
+构建出thrift对象，比如struct就是一个 field（name/type/optional）的列表，而struct的实例就是一个field/value的列表。<br>
+antlr4是一个构建编译器的工具，它使用类似bnf的语言来描述语言的词法和语法，然后就能构建出这门语言的编译器，按照thrift的语法可以
+定义对应的thrift的bnf(resources/Thrift.g4)。使用thrift的语法编译器就可以解析thrift的idl，由此能够动态实例化struct或者
+thrift service方法的参数。<br>
+
+使用jackson的sax功能可以遍历json string，然后按照解析出的thrift struct就能够完成json field与thrift struct field的映射，
+从而完成json与thrift的互转，动态thrift struct实例使用thrift-stuff序列化成byte数组。<br>
+
+xml的转换与json类似，使用jackson xml组件完成。
+
+## 2.2 使用
+### 2.2.1 thrift idl
+
+entity.thrift<br>
+
+``` 
+namespace java com.github.rolandhe.thrift.enhancer.test
+
+enum AdStyle
+{
+   WORD,
+   IMAGE
+}
+
+struct StandardAd
+{
+  1: i8 type,
+  2: i16 category,
+  3: i32 id,
+  4: i64 seq,
+  5: string name,
+  6: binary content,
+  7: bool isStart,
+  8: double percent,
+  9: AdStyle adStyle
+}
+
+struct Creative {
+ 1: i64 id,
+ 2: list<StandardAd> standardList,
+ 3: list<i8> byteList,
+ 4: list<i16> shortList,
+ 5: list<i32> intList,
+ 6: list<i64> longList,
+ 7: map<string,string> mapString,
+ 8: map<string,StandardAd> mapAd,
+ 9: optional map<i32, string> intPair,
+ 10: StandardAd spec
+}
+
+struct CreativeAll {
+ 1: i64 id,
+ 2: list<StandardAd> standardList,
+ 3: list<i8> byteList,
+ 4: list<i16> shortList,
+ 5: list<i32> intList,
+ 6: list<i64> longList,
+ 7: map<string,string> mapString,
+ 8: map<string,StandardAd> mapAd,
+ 9: optional map<i32, string> intPair,
+ 10: StandardAd spec,
+ 11: i8 type,
+ 12: i16 category,
+ 13: i32 shortid,
+ 14: i64 seq,
+ 15: string name,
+ 16: binary content,
+ 17: bool isStart,
+ 18: double percent,
+ 19: AdStyle adStyle
+}
+
+```
+
+complex.thrift<br>
+
+```
+include "entity.thrift"
+namespace java com.github.rolandhe.thrift.enhancer.test
+
+
+
+
+service CreativeService
+{
+    void create(1: entity.Creative creative),
+    map<string,string> convert(1: entity.Creative creative),
+    list<i32> getList(),
+    entity.StandardAd build(),
+    map<i32,string> work(),
+    bool show()
+    entity.AdStyle getStyle()
+}
+
+```
+
+### 2.2.2 json translate example
+
+```
+ public static void main(String[] args) {
+    PojoStandardAd pojoStandardAd = createPojoAd(Integer.MAX_VALUE);
+    // convert to json
+    String json = JsonHelper.toJson(pojoStandardAd);
+
+    ResourceStreamIdlParser resourceStreamIncludeParser = new ResourceStreamIdlParser();
+    // load thrift idl file from resources
+    ThriftJavaIdl thriftJavaIdl = resourceStreamIncludeParser.parse("complex.thrift");
+
+    JsonTranslator jsonTranslator = new JsonTranslator();
+
+    byte[] transBuffer = jsonTranslator
+        .translateRequest(json, thriftJavaIdl, "entity.StandardAd", false);
+  }
+
+```
+更多示例参见 unit test case。
+
+### 2.2.3 idl解析
+
+IdlParser 接口定义了idl文件的解析功能，AbstractIdlParser 实现了具体的解析实现，你只需要提供一个
+idl文件的流即可，即你需要实现openInputStream方法，基于AbstractIdlParser你可以解析存储在任意地方
+的idl 文件，比如: 你可以从web下载一个idl文件并解析。我们已经内置了:<br>
+* ResourceStreamIdlParser, 支持从resources加载idl文件
+* FileIdlParser， 从绝对路径读取idl文件解析
+
+
+### 2.2.4 协议转换
+
+* JsonTranslator， 实现json与thrift的转换
+* XmlTranslator， 实现xml与thrift的转换
+
+
 
 
 
