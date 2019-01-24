@@ -575,6 +575,10 @@ idl文件的流即可，即你需要实现openInputStream方法，基于Abstract
 * XmlTranslator， 实现xml与thrift的转换
 
 
+# License
+[MIT License](https://opensource.org/licenses/MIT)
+
+
 
 
 
