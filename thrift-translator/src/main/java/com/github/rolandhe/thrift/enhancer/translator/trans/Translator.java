@@ -43,7 +43,7 @@ public interface Translator {
    * @param thriftData thrift协议数据
    * @param thriftJavaIdl
    * @param functionName
-   * @param enumIndex
+   * @param enumIndex 枚举是否使用index进行输出，false表示以文本输出
    * @return
    */
   String translateResponse(byte[] thriftData, ThriftJavaIdl thriftJavaIdl, String functionName, boolean enumIndex);
